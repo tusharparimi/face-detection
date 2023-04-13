@@ -78,16 +78,30 @@ h2=edge_haar_ud(roi1,gray_roi1,20,40,150)
 cv2.imshow("h2",h2)
 cv2.waitKey(0)
 
-# for i in range(1,140):
-#     for j in range(2,140):
-#         v1=edge_haar_lr(roi,gray_roi,i,j,255)
-#         cv2.imshow("v1",v1)
-#         cv2.waitKey(0)
+for i in range(1,140):
+    for j in range(2,140):
+        v1=edge_haar_lr(roi,gray_roi,i,j,255)
+        cv2.imshow("v1",v1)
+        cv2.waitKey(0)
+
+for i in range(1,140):
+    for j in range(2,140):
+        v2=edge_haar_lr(roi1,gray_roi1,i,j,150)
+        cv2.imshow("v2",v2)
+        cv2.waitKey(0)
+
+
 
 for i in range(2,140):
     for j in range(1,140):
-        h1=edge_haar_ud(roi1,gray_roi1,i,j,150)
+        h1=edge_haar_ud(roi,gray_roi,i,j,255)
         cv2.imshow("h1",h1)
+        cv2.waitKey(0)
+
+for i in range(2,140):
+    for j in range(1,140):
+        h2=edge_haar_ud(roi1,gray_roi1,i,j,150)
+        cv2.imshow("h2",h2)
         cv2.waitKey(0)
                 
 
