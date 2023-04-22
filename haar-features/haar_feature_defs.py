@@ -4,11 +4,11 @@ import sys
 sys.path.insert(1,'C:\\Users\\tusha\\OneDrive\\Documents\\Projects\\face-detection\\facial-features')
 from integral_image import integral_image, block_sum
 
-def rect2_haar_hort(gray_img,lenh,lenw):
+def rect2_haar_hort(gray_img,lenh,lenw,stride_h=1,stride_w=1):
     feature_dict={}
     (h,w)=gray_img.shape
-    for i in range(0,h-lenh+1):
-        for j in range(0,w-lenw+1):
+    for i in range(0,h-lenh+1,stride_h):
+        for j in range(0,w-lenw+1,stride_w):
             temp=gray_img[i:i+lenh,j:j+lenw]
             temp_int=integral_image(temp)
             bsum1=block_sum(temp_int,(0,0),int(lenw/2),lenh)
@@ -17,11 +17,11 @@ def rect2_haar_hort(gray_img,lenh,lenw):
             feature_dict['rect2_hort_'+str(lenh)+'x'+str(lenw)+'_'+'('+str(i)+','+str(j)+')']=res
     return feature_dict
 
-def rect2_haar_vert(gray_img,lenh,lenw):
+def rect2_haar_vert(gray_img,lenh,lenw,stride_h=1,stride_w=1):
     feature_dict={}
     (h,w)=gray_img.shape
-    for i in range(0,h-lenh+1):
-        for j in range(0,w-lenw+1):
+    for i in range(0,h-lenh+1,stride_h):
+        for j in range(0,w-lenw+1,stride_w):
             temp=gray_img[i:i+lenh,j:j+lenw]
             temp_int=integral_image(temp)
             bsum1=block_sum(temp_int,(0,0),lenw,int(lenh/2))
@@ -30,11 +30,11 @@ def rect2_haar_vert(gray_img,lenh,lenw):
             feature_dict['rect2_vert_'+str(lenh)+'x'+str(lenw)+'_'+'('+str(i)+','+str(j)+')']=res
     return feature_dict
 
-def rect3_haar_hort(gray_img,lenh,lenw):
+def rect3_haar_hort(gray_img,lenh,lenw,stride_h=1,stride_w=1):
     feature_dict={}
     (h,w)=gray_img.shape
-    for i in range(0,h-lenh+1):
-        for j in range(0,w-lenw+1):
+    for i in range(0,h-lenh+1,stride_h):
+        for j in range(0,w-lenw+1,stride_w):
             temp=gray_img[i:i+lenh,j:j+lenw]
             temp_int=integral_image(temp)
             bsum1=block_sum(temp_int,(0,0),int(lenw/3),lenh)
@@ -44,11 +44,11 @@ def rect3_haar_hort(gray_img,lenh,lenw):
             feature_dict['rect3_hort_'+str(lenh)+'x'+str(lenw)+'_'+'('+str(i)+','+str(j)+')']=res
     return feature_dict
 
-def rect4_haar_diag(gray_img,lenh,lenw):
+def rect4_haar_diag(gray_img,lenh,lenw,stride_h=1,stride_w=1):
     feature_dict={}
     (h,w)=gray_img.shape
-    for i in range(0,h-lenh+1):
-        for j in range(0,w-lenw+1):
+    for i in range(0,h-lenh+1,stride_h):
+        for j in range(0,w-lenw+1,stride_w):
             temp=gray_img[i:i+lenh,j:j+lenw]
             temp_int=integral_image(temp)
             bsum1=block_sum(temp_int,(0,0),int(lenw/2),int(lenh/2))
@@ -82,19 +82,19 @@ if __name__ == "__main__":
     features={}
     for i in range(1,h24+1):
         for j in range(2,w24+1):
-            features.update(rect2_haar_hort(gray24,i,j))
+            features.update(rect2_haar_hort(gray24,i,j,i,j))
     
     for i in range(2,h24+1):
         for j in range(1,w24+1):
-            features.update(rect2_haar_vert(gray24,i,j))
+            features.update(rect2_haar_vert(gray24,i,j,i,j))
     
     for i in range(1,h24+1):
         for j in range(3,w24+1):
-            features.update(rect3_haar_hort(gray24,i,j))
+            features.update(rect3_haar_hort(gray24,i,j,i,j))
     
     for i in range(2,h24+1):
         for j in range(2,w24+1):
-            features.update(rect4_haar_diag(gray24,i,j))
+            features.update(rect4_haar_diag(gray24,i,j,i,j))
     
     
     print(len(features))
