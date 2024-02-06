@@ -4,14 +4,14 @@ TODO: Read documentation and papers whether cascade approach or CNNs are better 
 
 ### Approach 
 - Generate [Haar features](https://github.com/tusharparimi/face-detection/issues/1) for the facial and non-facial datasets.
-- Train both boosting and bagging based ensemble tree model and compare the performance metrics.
+- Train both [boosting](https://github.com/tusharparimi/face-detection/issues/2) and [bagging](https://github.com/tusharparimi/face-detection/issues/5) based ensemble tree models and compare the performance metrics.
 
 ### Performance
-- Decision tree
+- Decision tree:
 Mean score of 0.933 with a standard deviation of 0.003
 
-- Random Forest (Bagging)
+- Random Forest (Bagging):
 Mean score of 0.979 with a standard deviation of 0.002
 
-- AdaBoost (Boosting)
+- AdaBoost (Boosting):
 Mean score of 0.961 with a standard deviation of 0.002
