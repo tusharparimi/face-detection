@@ -1,6 +1,3 @@
-#This file was runned on google colab
-
-
 import cv2
 import numpy as np
 from csv import DictWriter
@@ -8,7 +5,7 @@ from csv import writer
 import os
 from nonfacial_data_augmentation import file_paths
 import sys
-sys.path.insert(1,'C:\\Users\\tusha\\OneDrive\\Documents\\Projects\\face-detection\\haar-features')
+sys.path.insert(1,'C:\\Users\\tusha\\Documents\\projects\\face-detection\\haar-features')
 from haar_feature_defs import rect2_haar_hort, rect2_haar_vert, rect3_haar_hort, rect4_haar_diag
 
 def create_csvfile(dict_data,csvfile_name):

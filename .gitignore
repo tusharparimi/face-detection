@@ -1,0 +1,6 @@
+# ignore folders image data files
+/facial_images
+/NON_facial_images
+
+# ignore features dataset csv files
+*.csv

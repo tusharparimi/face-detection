@@ -1,3 +1,7 @@
+# example scripts for generating a facial_images folder (11440) from a source folder
+# done for renaming the first 11440 files with integer names
+# also selecting images with size (128x128)
+
 import cv2
 import os
 import numpy as np

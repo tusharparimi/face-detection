@@ -2,6 +2,41 @@ import cv2
 import numpy as np
 from integral_image import integral_image, block_sum
 
+def edge_haar_lr(img,gray_img,lenh,lenw,threshold):
+    out=img.copy()
+    (h,w)=gray_img.shape
+    for i in range(0,h-lenh,lenh):
+        for j in range(0,w-lenw,lenw):
+            temp=gray_img[i:i+lenh,j:j+lenw]
+            temp_int=integral_image(temp)
+            bsum1=block_sum(temp_int,(0,0),int(lenw/2),lenh)
+            bsum2=block_sum(temp_int,(int(lenw/2),0),int(lenw/2),lenh)
+            #print("block sums:")
+            #print(bsum1/((lenh/2)*(lenw/2)))
+            #print(bsum2/((lenh/2)*(lenw/2)))
+            if abs((bsum1/((lenh/2)*(lenw/2)))-(bsum2/((lenh/2)*(lenw/2))))>=threshold:
+                cv2.rectangle(out,(j,i),(j+int(lenw/2)-1,i+lenh-1),(0,250,0),1)
+                cv2.rectangle(out,(j+int(lenw/2),i),(j+lenw-1,i+lenh-1),(0,0,250),1)
+    return out
+
+def edge_haar_ud(img,gray_img,lenh,lenw,threshold):
+    out=img.copy()
+    (h,w)=gray_img.shape
+    for i in range(0,h-lenh,lenh):
+        for j in range(0,w-lenw,lenw):
+            temp=gray_img[i:i+lenh,j:j+lenw]
+            temp_int=integral_image(temp)
+            bsum1=block_sum(temp_int,(0,0),lenw,int(lenh/2))
+            bsum2=block_sum(temp_int,(0,int(lenh/2)),lenw,int(lenh/2))
+            #print("block sums:")
+            #print(bsum1/((lenh/2)*(lenw/2)))
+            #print(bsum2/((lenh/2)*(lenw/2)))
+            if abs((bsum1/((lenh/2)*(lenw/2)))-(bsum2/((lenh/2)*(lenw/2))))>=threshold:
+                cv2.rectangle(out,(j,i),(j+lenw-1,i+int(lenh/2)-1),(250,0,0),1)
+                cv2.rectangle(out,(j,i+int(lenh/2)),(j+lenw-1,i+lenh-1),(0,0,250),1)
+    return out
+
+
 if __name__ == "__main__":
 
     #reading an image
@@ -72,40 +107,6 @@ if __name__ == "__main__":
             cv2.imshow("h2",h2)
             cv2.waitKey(0)
 
-
-def edge_haar_lr(img,gray_img,lenh,lenw,threshold):
-    out=img.copy()
-    (h,w)=gray_img.shape
-    for i in range(0,h-lenh,lenh):
-        for j in range(0,w-lenw,lenw):
-            temp=gray_img[i:i+lenh,j:j+lenw]
-            temp_int=integral_image(temp)
-            bsum1=block_sum(temp_int,(0,0),int(lenw/2),lenh)
-            bsum2=block_sum(temp_int,(int(lenw/2),0),int(lenw/2),lenh)
-            #print("block sums:")
-            #print(bsum1/((lenh/2)*(lenw/2)))
-            #print(bsum2/((lenh/2)*(lenw/2)))
-            if abs((bsum1/((lenh/2)*(lenw/2)))-(bsum2/((lenh/2)*(lenw/2))))>=threshold:
-                cv2.rectangle(out,(j,i),(j+int(lenw/2)-1,i+lenh-1),(0,250,0),1)
-                cv2.rectangle(out,(j+int(lenw/2),i),(j+lenw-1,i+lenh-1),(0,0,250),1)
-    return out
-
-def edge_haar_ud(img,gray_img,lenh,lenw,threshold):
-    out=img.copy()
-    (h,w)=gray_img.shape
-    for i in range(0,h-lenh,lenh):
-        for j in range(0,w-lenw,lenw):
-            temp=gray_img[i:i+lenh,j:j+lenw]
-            temp_int=integral_image(temp)
-            bsum1=block_sum(temp_int,(0,0),lenw,int(lenh/2))
-            bsum2=block_sum(temp_int,(0,int(lenh/2)),lenw,int(lenh/2))
-            #print("block sums:")
-            #print(bsum1/((lenh/2)*(lenw/2)))
-            #print(bsum2/((lenh/2)*(lenw/2)))
-            if abs((bsum1/((lenh/2)*(lenw/2)))-(bsum2/((lenh/2)*(lenw/2))))>=threshold:
-                cv2.rectangle(out,(j,i),(j+lenw-1,i+int(lenh/2)-1),(250,0,0),1)
-                cv2.rectangle(out,(j,i+int(lenh/2)),(j+lenw-1,i+lenh-1),(0,0,250),1)
-    return out
                 
 
         

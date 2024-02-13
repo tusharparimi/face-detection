@@ -2,6 +2,7 @@ import cv2
 import os
 import numpy as np
 
+# file paths list for files in a folder
 def file_paths(folder_path):
     f_paths=[]
     for file in os.listdir(folder_path):
@@ -10,6 +11,8 @@ def file_paths(folder_path):
             f_paths.append(eachfile_path)
     return f_paths
 
+# getting rois from images
+# since not many  non-facial images were available in the used dataset we do data augmentation here to get 'n' rois from one image 
 def get_rois(img,newh,neww,n):
     (h,w)=img.shape[:2]
     print(h,w)
@@ -29,7 +32,7 @@ def get_rois(img,newh,neww,n):
         return []
     
 
-
+# actual code for data augmenting to generate the NON_facial_images folder
 if __name__ == "__main__":
 
     image_paths=file_paths("C:\\Users\\tusha\\Downloads\\iccv09Data.tar\\iccv09Data\\iccv09Data\\images")
