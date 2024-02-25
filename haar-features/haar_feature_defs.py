@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import sys
-sys.path.insert(1,'C:\\Users\\tusha\\OneDrive\\Documents\\Projects\\face-detection\\facial-features')
+sys.path.insert(1,'C:\\Users\\tusha\\Documents\\Projects\\face-detection\\facial-features')
 from integral_image import integral_image, block_sum
 
 def rect2_haar_hort(gray_img,lenh,lenw,stride_h=1,stride_w=1):

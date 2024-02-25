@@ -5,7 +5,7 @@ from csv import writer
 import os
 from nonfacial_data_augmentation import file_paths
 import sys
-sys.path.insert(1,'C:\\Users\\tusha\\Documents\\Projects\\face-detection\\haar-features')
+sys.path.insert(1,'C:\\Users\\tusha\\Documents\\Projects\\face-detection\\haar_features')
 from haar_feature_defs import rect2_haar_hort, rect2_haar_vert, rect3_haar_hort, rect4_haar_diag
 
 # create or update a csvfile with the dictionary provided as the new row
