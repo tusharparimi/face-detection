@@ -29,7 +29,8 @@ print(f"Total regions proposals: {len(rects)}")
 res=img.copy()
 
 rf_model=pickle.load(open("tree-modelling\\face_rf.sav", 'rb'))
-print(rf_model)
+ab_model=pickle.load(open("tree-modelling\\face_ab.sav", 'rb'))
+dt_model=pickle.load(open("tree-modelling\\face_dt.sav", 'rb'))
 
 for i in range(len(rects)):
     x, y, w, h=rects[i]
@@ -56,9 +57,9 @@ for i in range(len(rects)):
     
     df=pd.DataFrame.from_dict([features])
     #print(df)
-    print(rf_model.predict(df))
-    if rf_model.predict(df):
-        res=cv2.rectangle(res, (x, y), (x + w, y + h), (0, 255, 0), 1)
+    #print(rf_model.predict(df))
+    if rf_model.predict(df) and ab_model.predict(df) and dt_model.predict(df):
+        res=cv2.rectangle(res, (x, y), (x + w, y + h), (0, 0, 255), 1)
 
     cv2.imshow('res', res)
     k=cv2.waitKey(1)
