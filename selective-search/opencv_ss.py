@@ -25,13 +25,13 @@ print(f"Total regions proposals: {len(rects)}")
 print(rects[0])
 
 
-for i in range(0, len(rects), 100):
+for i in range(0, len(rects)):
     res=img.copy()
     for (x, y, w, h) in rects[i:i+100]:
         color = [random.randint(0, 255) for j in range(0, 3)]
         cv2.rectangle(res, (x, y), (x + w, y + h), color, 2)
     
     cv2.imshow("res", res)
-    k=cv2.waitKey(0)
+    k=cv2.waitKey(1)
     if k==ord("q"):
         break
