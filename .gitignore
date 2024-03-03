@@ -7,3 +7,6 @@
 
 # ignore __pycache__ files
 /my-cascade/__pycache__/
+/dataset-creation/__pycache__/
+/facial-features/__pycache__/
+/haar-features/__pycache__/
