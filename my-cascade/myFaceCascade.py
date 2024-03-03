@@ -1,37 +1,24 @@
 
-
-class faceDetector:
-    def __init__(self, img, minWinSize, maxWinSize):
-        self.minWinSize=minWinSize
-        self.maxWinSize=maxWinSize
-        self.img=img
-
-
-
-class faceClassifier:
-    def __init__(self, scale):
-        self.scale=scale
-
-    def compute():
-        pass
-
-
 class faceCascade:
     def __init__(self):
-        pass
+        self.stages=[]
+    
+    def add_stage(self, stage):
+        self.stages.append(stage)
+
+    def get_len(self):
+        return len(self.stages)
+    
 
 
 class faceCascadeStage:
-    def __init__(self, adaboost_model):
-        self.adaboost_model=adaboost_model
+    def __init__(self, model, feature):
+        self.model=model
+        self.feature=feature
 
-    def classify():
-        pass
-
-
-class faceFeature:
-    def __init__(self):
-        pass
-
-    def getSum():
-        pass
+    def classify(self, win):
+        df=self.feature.get_features(win)
+        if self.model.predict(df):
+            return True
+        return False
+      
