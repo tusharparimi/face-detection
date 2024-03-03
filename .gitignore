@@ -4,3 +4,6 @@
 
 # ignore features dataset csv files
 *.csv
+
+# ignore __pycache__ files
+/my-cascade/__pycache__/
