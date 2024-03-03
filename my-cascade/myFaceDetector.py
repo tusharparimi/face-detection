@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from myFaceClassifier import faceClassifier
 
 
 class faceDetector:
@@ -23,12 +24,15 @@ class faceDetector:
         return np.asarray(int_img)
 
 
-    def processImage(self):
+    def processImage(self, classifier: faceClassifier):
+        rects=[]
         h,w=self.int_img.shape
         for i in range(0, h-self.winSize, self.stride):
             for j in range(0, w-self.winSize, self.stride):
                 win=self.int_img[i:i+self.winSize, j:j+self.winSize]
-                pass
+                if classifier.compute(win):
+                    rects.append(i, j, self.winSize)
+        return rects
 
 
 
@@ -40,4 +44,4 @@ if __name__ == "__main__":
     #cv2.waitKey(0)
 
     detector=faceDetector(img, winSize=100, stride=20)
-    detector.processImage()
+    #detector.processImage()

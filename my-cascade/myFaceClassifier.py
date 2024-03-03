@@ -1,6 +1,8 @@
+from myFaceCascade import faceCascade
+
 class faceClassifier:
 
-    def __init__(self, cascade):
+    def __init__(self, cascade: faceCascade):
         self.cascade=cascade
 
     def compute(self, win):
