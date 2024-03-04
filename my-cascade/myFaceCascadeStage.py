@@ -1,14 +1,14 @@
 import pandas as pd
-from myFaceFeatureScale import faceFeatureScale
+from myFaceFeatureScale import faceFeatureScaler
 
 
 class faceCascadeStage:
     def __init__(self, model, feature):
         self.model=model
-        self.scale_feature=faceFeatureScale(feature)
+        self.scaler=faceFeatureScaler(feature)
 
     def classify(self, win):
-        features=self.scale_feature.get_features_all_scales(win)
+        features=self.scaler.get_features_all_scales(win)
         df=pd.DataFrame.from_dict([features])
         if self.model.predict(df):
             return True

@@ -3,7 +3,7 @@ from myFaceFeature import *
 #from myFaceDetector import faceDetector
 
 
-class faceFeatureScale:
+class faceFeatureScaler:
     def __init__(self, feature):
         self.feature=feature
 
