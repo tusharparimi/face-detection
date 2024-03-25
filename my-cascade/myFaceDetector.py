@@ -5,7 +5,7 @@ from myFaceClassifier import faceClassifier
 
 class faceDetector:
     def __init__(self, img, winSize, stride):
-        assert winSize < img.shape[0]/2 or winSize < img.shape[1]/2, f"winSize {winSize} is not less than 0.5*(image dim)"
+        #assert winSize < img.shape[0]/2 or winSize < img.shape[1]/2, f"winSize {winSize} is not less than 0.5*(image dim)"
         self.winSize=winSize
         self.stride=stride
         self.img=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -30,8 +30,11 @@ class faceDetector:
         for i in range(0, h-self.winSize, self.stride):
             for j in range(0, w-self.winSize, self.stride):
                 win=self.int_img[i:i+self.winSize, j:j+self.winSize]
+                show=self.img[i:i+self.winSize, j:j+self.winSize]
+                cv2.imshow("win", cv2.resize(show, None, fx=2, fy=2, interpolation=cv2.INTER_AREA))
+                cv2.waitKey(3)
                 if classifier.compute(win):
-                    rects.append(i, j, self.winSize)
+                    rects.append((i, j, self.winSize))
         return rects
 
 

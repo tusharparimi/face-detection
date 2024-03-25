@@ -4,43 +4,36 @@ from myFaceFeature import *
 
 
 class faceFeatureScaler:
-    def __init__(self, feature):
-        self.feature=feature
+    def __init__(self, winSize, featureTypes):
+        self.winSize=winSize
+        self.featureTypes=featureTypes
+        self.all_features=self.get_all_features()
+        self.num_features=len(self.all_features)
 
-    def get_features_all_scales(self, win):
-        feature_dict_all_scales={}
-        (h,w)=win.shape
-        ph=self.feature.parts_along_h
-        pw=self.feature.parts_along_w
-        for i in range(ph, h+1):
-            for j in range(pw, w+1):
-                feature_dict_all_scales.update(self.feature.get_features(win,i,j,i,j))
-        return feature_dict_all_scales
-
+    def get_all_features(self):
+        all_features=[]
+        feature_idx=0
+        for featureType in self.featureTypes:
+            ph=featureType.parts_along_h
+            pw=featureType.parts_along_w
+            for lenh in range(ph, self.winSize+1, ph):
+                for lenw in range(pw, self.winSize+1, pw):
+                    for p1 in range(0, self.winSize-lenh+1):
+                        for p0 in range(0, self.winSize-lenw+1):
+                            all_features.append((feature_idx, featureType, (p0,p1), (lenh,lenw))) #, featureType.get_feature_value(win, (p0,p1), lenh, lenw)))
+                            feature_idx+=1
+        return all_features
+    
+    def get_feature_info(self, feature_idx):
+        feature_info=self.all_features[feature_idx]
+        return feature_info
+        
 
 if __name__=="__main__":
     
-    # img=np.ones((10,10,3)).astype(np.uint8)
-    # detector=faceDetector(img, winSize=3, stride=1)
-    # print(detector.int_img.shape)
-
-    # win=detector.int_img[:5, :5]
-    win=np.ones((5,5), np.int32)
-    print(win.shape)
-    print(win)
-
-    feature=rect2hort()
-    print(feature.get_features(win, 2, 2, 2, 2))
-    print(len(feature.get_features(win, 2, 2, 2, 2)))
-
-    scale_feature=faceFeatureScale(feature)
-    print(scale_feature.get_features_all_scales(win))
-    print(len(scale_feature.get_features_all_scales(win)))
-
-    feature=rect3hort()
-    print(feature.get_features(win, 3, 3, 3, 3))
-    print(len(feature.get_features(win, 3, 3, 3, 3)))
-
-    scale_feature=faceFeatureScale(feature)
-    print(scale_feature.get_features_all_scales(win))
-    print(len(scale_feature.get_features_all_scales(win)))
+    win=np.ones((24,24))
+    featureTypes=[rect2hort(), rect2vert(), rect3hort(), rect3vert(), rect4diag()]
+    scaler=faceFeatureScaler(win.shape[0], featureTypes)
+    print(scaler.get_feature_info(1))
+    
+    

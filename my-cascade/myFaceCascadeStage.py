@@ -1,18 +1,19 @@
-import pandas as pd
-from myFaceFeatureScale import faceFeatureScaler
-
+import numpy as np
+from myFaceFeatureNode import faceFeatureNode
 
 class faceCascadeStage:
-    def __init__(self, model, feature):
-        self.model=model
-        self.scaler=faceFeatureScaler(feature)
+    def __init__(self):
+        self.nodes=[]
+        self.parent_idx=
+        self.threshold=None
+        pass
 
-    def classify(self, win):
-        features=self.scaler.get_features_all_scales(win)
-        df=pd.DataFrame.from_dict([features])
-        if self.model.predict(df):
-            return True
-        return False
+
+    def classify(self, wins):
+        node_preds=[node.alpha*node.predict(wins) for node in self.nodes]
+        y_pred=np.sum(node_preds, axis=0)
+        y_pred=np.sign(y_pred)
+        return y_pred
 
 
       

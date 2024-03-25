@@ -1,0 +1,22 @@
+New beginnings:
+
+
+main execution-
+
+
+
+training-
+
+1. get a set of face and non-face images
+2. modified adaboost to both select features for a stage and the thersholds of those features
+3. save the stages of a trained cascade in a xml file to read later for detecting faces
+
+
+
+detecting-
+
+1. a function that parses through all the image sub-windows
+2. read a trianed cascade from an xml file
+3. in each subwindow evaluate with all cascade stages in sequence i.e., execution only goes to next stage if passed from current stage
+4. reject subwindow immediately if subwindow failed at any stage
+5. return the subwindow as face detected if it passes through all stages
