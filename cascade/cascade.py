@@ -8,7 +8,7 @@ class cascade:
     def add_stage(self, stage: cascadeStage):
         self.stages.append(stage)
 
-    def train_cascade(self, P, N, Pval, Nval, Ftarget, f, d):
+    def train_cascade(self, P, N, Pval, Nval, Ftarget, f, d, feature_list):
         i=0
         F=[None]*self.num_stages
         D=[None]*self.num_stages
@@ -19,8 +19,9 @@ class cascade:
             i+=1
             F[i]=F[i-1]
             while F[i] > f*F[i-1]:
+                n[i]+=1
                 stage=cascadeStage()
-                stage.train_stage()
+                stage.train_stage(P, N, feature_list, n[i])
 
 
         pass

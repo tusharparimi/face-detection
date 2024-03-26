@@ -1,3 +1,6 @@
+import numpy as np
+from helpers import integral_image
+
 class featureType:
     def __init__(self):
         self.parts_along_h=None
@@ -50,9 +53,11 @@ class diag4(featureType):
 
 class feature:
     def __init__(self, pos, scale, type):
-        self.pos=pos
-        self.scale=scale
         self.type=type
+        self.pos=pos      #pos=(p[0], p[1])
+        assert scale[0]>=self.type.parts_along_w and scale[0]%self.type.parts_along_w==0, f"scale of w not enough to accomodate parts of feature along w"
+        assert scale[1]>=self.type.parts_along_h and scale[1]%self.type.parts_along_h==0, f"scale of h not enough to accomodate parts of feature along h"
+        self.scale=scale  #scale=(lenw, lenh)
 
     def block_sum(self, win, p, lenx, leny):
         h, w=win.shape
@@ -67,12 +72,45 @@ class feature:
             bsum+=-win[p[1]+leny-1][p[0]-1]
         return bsum
 
-    def get_value(self):
-        print(isinstance(self.type, hort2))
-        #TODO: implement get_value by the parameters pos, scale and type
+    def get_value(self, win):
+        if isinstance(self.type, hort2):
+            bsum1=self.block_sum(win, (self.pos[0],self.pos[1]),int(self.scale[0]/2),self.scale[1])
+            bsum2=self.block_sum(win, (self.pos[0]+int(self.scale[0]/2),self.pos[1]),int(self.scale[0]/2),self.scale[1])
+            res=bsum2-bsum1
+            return res
+        if isinstance(self.type, vert2):
+            bsum1=self.block_sum(win, (self.pos[0],self.pos[1]),self.scale[0],int(self.scale[1]/2))
+            bsum2=self.block_sum(win, (self.pos[0],self.pos[1]+int(self.scale[1]/2)),self.scale[0],int(self.scale[1]/2))
+            res=bsum1-bsum2
+            return res
+        if isinstance(self.type, hort3):
+            bsum1=self.block_sum(win, (self.pos[0],self.pos[1]),int(self.scale[0]/3),self.scale[1])
+            bsum2=self.block_sum(win, (self.pos[0]+int(self.scale[0]/3),self.pos[1]),int(self.scale[0]/3),self.scale[1])
+            bsum3=self.block_sum(win, (self.pos[0]+int((self.scale[0]*2)/3),self.pos[1]),int(self.scale[0]/3),self.scale[1])
+            res=bsum2-(bsum1+bsum3)
+            return res
+        if isinstance(self.type, vert3):
+            bsum1=self.block_sum(win, (self.pos[0],self.pos[1]),self.scale[0],int(self.scale[1]/3))
+            bsum2=self.block_sum(win, (self.pos[0],self.pos[1]+int(self.scale[1]/3)),self.scale[0],int(self.scale[1]/3))
+            bsum3=self.block_sum(win, (self.pos[0],self.pos[1]+int((self.scale[1]*2)/3)),self.scale[0],int(self.scale[1]/3))
+            res=bsum2-(bsum1+bsum3)
+            return res
+        if isinstance(self.type, diag4):
+            bsum1=self.block_sum(win, (self.pos[0],self.pos[1]),int(self.scale[0]/2),int(self.scale[0]/2))
+            bsum2=self.block_sum(win, (self.pos[0]+int(self.scale[0]/2),self.pos[1]),int(self.scale[0]/2),int(self.scale[1]/2))
+            bsum3=self.block_sum(win, (self.pos[0],self.pos[1]+int(self.scale[1]/2)),int(self.scale[0]/2),int(self.scale[1]/2))
+            bsum4=self.block_sum(win, (self.pos[0]+int(self.scale[0]/2),self.pos[1]+int(self.scale[1]/2)),int(self.scale[0]/2),int(self.scale[1]/2))
+            res=bsum2+bsum3-(bsum1+bsum4)
+            return res
 
 
 if __name__=="__main__":
-    f=feature((0,0), (1, 2), hort2())
+    f=feature((1,1), (2, 6), vert3())
+    print(f.type, f.pos, f.scale)
     print(f.type.parts_along_h, f.type.parts_along_w)
-    f.get_value()
+    img=np.ones((8, 8))
+    win=integral_image(img)
+    print(win.shape)
+    print(win)
+    value=f.get_value(win)
+    print(value)
