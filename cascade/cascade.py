@@ -15,13 +15,15 @@ class cascade:
         n=[0]*self.num_stages
         F[i]=1.0
         D[i]=1.0
+        n[i]=1
         while F[i] > Ftarget:
             i+=1
             F[i]=F[i-1]
+            stage=cascadeStage()
             while F[i] > f*F[i-1]:
                 n[i]+=1
-                stage=cascadeStage()
                 stage.train_stage(P, N, feature_list, n[i])
+                #TODO: complete cascade training process 
 
 
         pass
