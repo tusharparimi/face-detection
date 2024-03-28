@@ -4,9 +4,9 @@ from feature import *
 class cascadeStage:
     def __init__(self):
         self.stage_id=None
-        self.features=[]
+        #self.features=[]
         self.stumps=[] 
-        self.stage_threshold=None 
+        self.stage_threshold=0 
 
     def add_feature(self, f):
         self.features.append(f)
@@ -35,30 +35,50 @@ class cascadeStage:
                         stump.stump_threshold=threshold
                         stump.polarity=p
                         stump.feature=feature
+            
             EPS=1e-10
             stump.alpha=0.5*np.log((1.0-min_error+EPS)/(min_error+EPS))
             preds=stump.predict(samples)
             w*=np.exp(-stump.alpha*labels*preds)
             w/=np.sum(w)
             self.stumps.append(stump)
+            feature_list.remove(stump.feature)
+        self.stage_threshold=sum([stump.alpha for stump in self.stumps])
 
     def predict(self, samples):
+        print(self.stage_threshold)
         stump_preds=[stump.alpha*stump.predict(samples) for stump in self.stumps]
         y_pred=np.sum(stump_preds, axis=0)
-        y_pred=np.sign(y_pred) #TODO some changes related to AdaBoost (reduce threshold process instead of np.sign()) NOte: using stage_threshold
-        return y_pred
+        pred=-np.ones(samples.shape[0])
+        pred[y_pred >= self.stage_threshold]=1
+        return pred
+    
 
 
 
 if __name__=="__main__":
-    samples=np.ones((5, 24, 24))
+    samples=np.random.rand(6, 24, 24)
+    #samples=np.ones((5, 24, 24))
     samples=np.asarray([integral_image(x) for x in samples])
-    labels=np.ones((5))
-    print(samples.shape)
-    print(labels.shape)
+    labels=np.ones((6))
+    labels[2]=-1
+    labels[3]=-1
+    labels[5]=-1
+    #print(labels)
+    #print(samples.shape)
+    #print(labels.shape)
     feature_list=get_feature_list(24)
-    print(len(feature_list))
+    #print(len(feature_list))
     stage=cascadeStage()
-    stage.train_stage(samples, labels, feature_list, 2)
+    stage.train_stage(samples, labels, feature_list, 3)
+    p=np.random.permutation(labels.shape[0])
+    s_samples=samples[p]
+    s_labels=labels[p]
+    print(s_labels)
+    preds=stage.predict(s_samples)
+    print(preds)
+    print(stage.stumps)
+    for stump in stage.stumps:
+        print(stump.alpha)
     
     
