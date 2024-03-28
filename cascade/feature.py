@@ -60,6 +60,7 @@ class feature:
         self.scale=scale  #scale=(lenw, lenh)
 
     def block_sum(self, win, p, lenx, leny):
+        #print(win.shape)
         h, w=win.shape
         assert p[0]+lenx<=w and p[1]+leny<=h, f"point {p} and length combo {lenx, leny} out of bound"
 

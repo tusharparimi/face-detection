@@ -10,6 +10,7 @@ class decisionStump:
     def predict(self, samples):
         n_samples=samples.shape[0]
         feature_values=np.asarray([self.feature.get_value(x) for x in samples])
+        #feature_values=np.array([self.feature.get_value(samples[])])
         preds=np.ones(n_samples)
         if self.polarity==1:
             preds[feature_values<self.stump_threshold]=-1

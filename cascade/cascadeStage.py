@@ -46,7 +46,6 @@ class cascadeStage:
         self.stage_threshold=sum([stump.alpha for stump in self.stumps])
 
     def predict(self, samples):
-        print(self.stage_threshold)
         stump_preds=[stump.alpha*stump.predict(samples) for stump in self.stumps]
         y_pred=np.sum(stump_preds, axis=0)
         pred=-np.ones(samples.shape[0])
