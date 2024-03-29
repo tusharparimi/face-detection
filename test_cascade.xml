@@ -1,12 +1,11 @@
 <cascade>
-  <stage stage_thereshold="1.7169936006941457">
-    <stump polarity="-1" alpha="1.7169936006941457" stump_threshold="-50" feature_type="vert2" feature_pos="(7, 11)" feature_scale="(4, 2)" />
+  <stage stage_threshold="1.7169936006941457">
+    <stump polarity="-1" alpha="1.7169936006941457" stump_threshold="-56" feature_type="vert2" feature_pos="(7, 11)" feature_scale="(4, 2)" />
   </stage>
-  <stage stage_thereshold="3.463632152214341">
-    <stump polarity="1" alpha="1.3484384495137467" stump_threshold="-43.0" feature_type="diag4" feature_pos="(14, 11)" feature_scale="(8, 4)" />
-    <stump polarity="1" alpha="1.4663370674683942" stump_threshold="13.0" feature_type="hort2" feature_pos="(10, 4)" feature_scale="(2, 8)" />
-    <stump polarity="-1" alpha="1.650995363544383" stump_threshold="51.0" feature_type="diag4" feature_pos="(7, 15)" feature_scale="(4, 6)" />
-    <stump polarity="-1" alpha="1.51930832529516" stump_threshold="-19.0" feature_type="hort2" feature_pos="(14, 18)" feature_scale="(2, 4)" />
-    <stump polarity="1" alpha="1.478552946392657" stump_threshold="-17.0" feature_type="diag4" feature_pos="(11, 0)" feature_scale="(4, 14)" />
+  <stage stage_threshold="2.480182555090976">
+    <stump polarity="-1" alpha="1.3312939127995613" stump_threshold="23.0" feature_type="vert2" feature_pos="(7, 12)" feature_scale="(1, 2)" />
+    <stump polarity="-1" alpha="1.549294827987279" stump_threshold="-36.0" feature_type="hort2" feature_pos="(11, 9)" feature_scale="(4, 3)" />
+    <stump polarity="1" alpha="1.7577762031165083" stump_threshold="167.0" feature_type="vert2" feature_pos="(12, 6)" feature_scale="(6, 6)" />
+    <stump polarity="1" alpha="1.8418176111876274" stump_threshold="-181.0" feature_type="diag4" feature_pos="(10, 14)" feature_scale="(8, 6)" />
   </stage>
 </cascade>

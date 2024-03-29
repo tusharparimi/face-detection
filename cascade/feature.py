@@ -122,6 +122,22 @@ def get_feature_list(winSize, feature_types=[hort2(), vert2(), hort3(), vert3(),
     return feature_list
 
 
+def str2ftype(s):
+    if s=="hort2":
+        ftype=hort2()
+    elif s=="hort3":
+        ftype=hort3()
+    elif s=="vert2":
+        ftype=vert2()
+    elif s=="vert3":
+        ftype=vert3()
+    else:
+        ftype=diag4()
+    return ftype
+    
+
+
+
 if __name__=="__main__":
     f=feature((1,1), (2, 6), vert3())
     print(f.type, f.pos, f.scale)

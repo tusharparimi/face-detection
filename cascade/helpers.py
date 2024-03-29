@@ -22,6 +22,12 @@ def evaluate(preds_val, labels_val):
     return tp/(tp+fn), fp/(fp+tn)
 
 
+def str2tuple(s):
+    s=s.split(", ")
+    t=(int(s[0][1:]), int(s[1][:-1]))
+    return t
+
+
 
 if __name__=="__main__":
     preds_val=np.ones((5,))

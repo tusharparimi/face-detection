@@ -1,5 +1,7 @@
 import numpy as np
 from cascadeStage import cascadeStage
+from stump import decisionStump
+from feature import feature, str2ftype
 import helpers
 from sklearn.model_selection import train_test_split
 import xml.etree.ElementTree as ET
@@ -15,7 +17,6 @@ class cascade:
 
     def train_cascade(self, P, N, Ftarget, f, d, feature_list):
         cascade_tag=ET.Element('cascade')
-        #cascade_tag.set() #TODO: add num_stages attribute to cascade tag in XML
         i=0
         F=[None]*(self.num_stages+1)
         D=[None]*(self.num_stages+1)
@@ -24,33 +25,25 @@ class cascade:
         D[i]=1.0
         n[i]=1
         Nset=N[0:P.shape[0]]
-        #print(Nset.shape[0])
-        #print(P.shape[0])
         while F[i] > Ftarget:
             samples=np.append(P, Nset, axis=0)
             labels=np.append(np.ones((P.shape[0])), -np.ones((Nset.shape[0])))
-            #print(samples.shape)
-            #print(labels.shape)
             samples, samples_val, labels, labels_val=train_test_split(samples, labels, test_size=0.2, stratify=labels)
-            i+=1
+            i+=1    #TODO: implement condition if i>num_stages then just break and store the current cascade
             F[i]=F[i-1]
             stage=cascadeStage()
             while F[i] > f*F[i-1]:
                 n[i]+=1
-                #print(samples.shape, labels.shape)
                 stage.train_stage(samples, labels, feature_list, n[i])
-                #TODO: complete cascade training process
                 preds_val=stage.predict(samples_val)
                 D[i], F[i]=helpers.evaluate(preds_val, labels_val)
                 while D[i] < d*D[i-1]:
                     stage.stage_threshold=stage.stage_threshold-1
                     preds_val=stage.predict(samples_val)
                     D[i], F[i]=helpers.evaluate(preds_val, labels_val)
-            #print("yes")
-            #print(stage)
             self.add_stage(stage)
             stage_tag=ET.SubElement(cascade_tag, "stage")
-            stage_tag.set('stage_thereshold', str(stage.stage_threshold))
+            stage_tag.set('stage_threshold', str(stage.stage_threshold))
             for stump in stage.stumps:
                 stump_tag=ET.SubElement(stage_tag, "stump")
                 stump_tag.set('polarity', str(stump.polarity))
@@ -62,9 +55,7 @@ class cascade:
             print("stage "+str(i)+" added")
             Nset=np.zeros((P.shape))
             if F[i] > Ftarget:
-                #TODO: evaluate the current cascade on non-face images and only put false detections in the samples for next stage
                 j=0
-                print(N.shape)
                 for each in N:
                     each=each.reshape(1, each.shape[0], each.shape[1])
                     if self.predict(each)==1:
@@ -77,19 +68,41 @@ class cascade:
 
         ET.indent(cascade_tag)
         b_xml=ET.tostring(cascade_tag)
-        #print(type(b_xml))
         with open("test_cascade.xml", "wb+") as f:
             f.write(b_xml)
 
         
-
     def predict(self, sample):
         for stage in self.stages:
             if stage.predict(sample)[0]==-1:
                 return -1
         return 1
     
-
-    def load_cascade(self, xml):
-        #TODO: implement the function for loading the cascade from a XML file
+    def detect(self, img):
+        #TODO: implement detection logic of parsing through every subwindow(24x24) in the image and return a rect if that subwindow has a face
         pass
+    
+
+def load_cascade(xml_path):
+    tree=ET.parse(xml_path)
+    cascade_xml=tree.getroot()
+    num_stages=len(cascade_xml)
+    cascade_obj=cascade(num_stages)
+    for stage_xml in cascade_xml:
+        stage=cascadeStage()
+        stage.stage_threshold=float(stage_xml.attrib['stage_threshold'])
+        for stump_xml in stage_xml:
+            stump=decisionStump()
+            stump.polarity=int(stump_xml.attrib['polarity'])
+            stump.alpha=float(stump_xml.attrib['alpha'])
+            stump.stump_threshold=float(stump_xml.attrib['stump_threshold'])
+            ftype=str2ftype(stump_xml.attrib['feature_type'])
+            pos=helpers.str2tuple(stump_xml.attrib['feature_pos'])
+            scale=helpers.str2tuple(stump_xml.attrib['feature_scale'])
+            stump.feature=feature(pos, scale, ftype)
+            stage.stumps.append(stump)
+        cascade_obj.add_stage(stage)
+    return cascade_obj
+
+
+    
