@@ -78,9 +78,16 @@ class cascade:
                 return -1
         return 1
     
-    def detect(self, img):
-        #TODO: implement detection logic of parsing through every subwindow(24x24) in the image and return a rect if that subwindow has a face
-        pass
+    def detect(self, img, winSize, stride):
+        rects=[]
+        int_img=helpers.integral_image(img)
+        h, w=int_img.shape
+        for i in range(0, h-winSize, stride):
+            for j in range(0, w-winSize, stride):
+                win=int_img[i:i+winSize, j:j+winSize].reshape(1, winSize, winSize)
+                if self.predict(win)==1:
+                    rects.append((i, j, winSize))
+        return rects    
     
 
 def load_cascade(xml_path):
